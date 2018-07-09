@@ -29,8 +29,10 @@
                     {{--<a href="#" class="btn btn-primary btn-block">Edit</a>--}}
                 </div>
                 <div class="col-sm-6">
+                    {!! Form::open(['route' => ['posts.destroy', $post->id], 'method' => 'DELETE']) !!}
                     {{--<a href="#" class="btn btn-danger btn-block">Delete</a>--}}
-                    {!! Html::linkRoute('posts.destroy', 'Delete', array($post->id), array('class' => 'btn btn-danger btn-block')) !!}
+                     {{ Form::submit('Delete', ['class' => 'btn btn-danger btn-block']) }}
+                    {!! Form::close() !!}
                 </div>
             </div>
 
