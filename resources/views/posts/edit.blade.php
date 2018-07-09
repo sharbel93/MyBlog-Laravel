@@ -1,7 +1,7 @@
 @extends('main')
 @section('title' , '| Edit Blog Post')
 @section('content')
-    {!! Form::model($post, ['route' => ['posts.update', $post->id]]) !!}
+    {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT'] ) !!}
     <div class="row">
 
 
@@ -38,7 +38,7 @@
                     <div class="col-sm-6">
                         {{ Form::submit('Save Changes', ['class' => 'btn btn-success btn-block']) }}
                         {{--<a href="#" class="btn btn-danger btn-block">Delete</a>--}}
-                        {!! Html::linkRoute('posts.update', 'Save Changes', array($post->id), array('class' => 'btn btn-success btn-block')) !!}
+                        {{--{!! Html::linkRoute('posts.update', 'Save Changes', array($post->id), array('class' => 'btn btn-success btn-block')) !!}--}}
                     </div>
                 </div>
 
