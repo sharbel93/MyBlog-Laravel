@@ -9,6 +9,9 @@
             <li class="nav-item {{ Request::is('/') ? "active" : "" }}">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
+            <li class="nav-item {{ Request::is('blog') ? "active" : "" }}">
+                <a class="nav-link" href="/blog">Blog </a>
+            </li>
             <li class="nav-item {{ Request::is('about') ? "active" : "" }}">
                 <a class="nav-link" href="/about">About </a>
             </li>
@@ -19,18 +22,37 @@
         </ul>
 
         <ul class="navbar-nav mr-sm-5 ">
-
+            @if(Auth::check())
             <li class="nav-item dropdown ">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    My Account
+                   Hello, {{ Auth::user()->name }}
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ route('posts.index') }}">Posts</a>
+                    <a class="dropdown-item" href="{{ route('categories.index') }}">Categories</a>
+                    <a class="dropdown-item" href="{{ route('tags.index') }}">Tags</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
                 </div>
+                {{--<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">--}}
+
+                    {{--<a class="dropdown-item" href="{{ route('posts.index') }}">Posts</a>--}}
+                    {{--<div class="dropdown-divider"></div>--}}
+                    {{--<a class="dropdown-item" href="{{ route('logout') }}">LogOut</a>--}}
+                {{--</div>--}}
             </li>
+                @else
+                <li><a href="{{ route('login') }}" class="nav-link ">Login</a></li>
+                <li><a href="{{ route('register') }}" class="nav-link ">Register</a></li>
+                @endif
         </ul>
     </div>
 </nav>

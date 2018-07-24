@@ -19,54 +19,19 @@
 
     <div class="row">
         <div class="col-md-8">
+            @foreach($posts as $post)
             <div class="post">
-                <h3>Post Title</h3>
-                <p> Lorem ipsum dolor sit amet, sed donec et eros felis dolor massa. Duis et sollicitudin nibh in
-                    turpis. Suspendisse praesent nisl velit quisquam, gravida condimentum sed quam elementum aliquet,
-                    sed pretium donec, turpis nec donec, tortor fringilla facilisi velit. Nonummy magna erat aliquet
-                    sodales, vel arcu eu cras erat ut, pede ipsum ac luctus sit, non vitae sapien.
-                </p>
-
-                <a href="#" class="btn btn-primary">Read More </a>
-            </div>
-
-            <hr>
-            <div class="post">
-                <h3>Post Title</h3>
-                <p> Lorem ipsum dolor sit amet, sed donec et eros felis dolor massa. Duis et sollicitudin nibh in
-                    turpis. Suspendisse praesent nisl velit quisquam, gravida condimentum sed quam elementum aliquet,
-                    sed pretium donec, turpis nec donec, tortor fringilla facilisi velit. Nonummy magna erat aliquet
-                    sodales, vel arcu eu cras erat ut, pede ipsum ac luctus sit, non vitae sapien.
-                </p>
-
-                <a href="#" class="btn btn-primary">Read More </a>
-            </div>
-
-            <hr>
-            <div class="post">
-                <h3>Post Title</h3>
-                <p> Lorem ipsum dolor sit amet, sed donec et eros felis dolor massa. Duis et sollicitudin nibh in
-                    turpis. Suspendisse praesent nisl velit quisquam, gravida condimentum sed quam elementum aliquet,
-                    sed pretium donec, turpis nec donec, tortor fringilla facilisi velit. Nonummy magna erat aliquet
-                    sodales, vel arcu eu cras erat ut, pede ipsum ac luctus sit, non vitae sapien.
-                </p>
-
-                <a href="#" class="btn btn-primary">Read More </a>
-            </div>
-
-            <hr>
-
-            <div class="post">
-                <h3>Post Title</h3>
+                <h3>{{ $post->title }}</h3>
                 <p>
-                    Lorem ipsum dolor sit amet, sed donec et eros felis dolor massa. Duis et sollicitudin nibh in
-                    turpis. Suspendisse praesent nisl velit quisquam, gravida condimentum sed quam elementum aliquet,
-                    sed pretium donec, turpis nec donec, tortor fringilla facilisi velit. Nonummy magna erat aliquet
-                    sodales, vel arcu eu cras erat ut, pede ipsum ac luctus sit, non vitae sapien.
+                {{ substr($post->body, 0, 300) }}
+                    {{ strlen($post->body) > 300 ? "..." : "" }}
                 </p>
 
-                <a href="#" class="btn btn-primary">Read More </a>
+                <a href="{{ url('blog', $post->slug) }}" class="btn btn-primary">Read More </a>
             </div>
+              <hr>
+              @endforeach
+
         </div>
 
         <div class="col-md-3 offset-md-1">

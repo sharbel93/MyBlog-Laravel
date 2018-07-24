@@ -1,5 +1,12 @@
 @extends('main')
 @section('title' , '| Edit Blog Post')
+
+@section('stylesheets')
+
+    {!! Html::style('css/select2.min.css') !!}
+
+@endsection
+
 @section('content')
     {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT'] ) !!}
     <div class="row">
@@ -9,6 +16,15 @@
 
        {{ Form::label('title', 'Title:') }}
        {{ Form::text('title', null, ['class' => 'form-control form-control-lg'] , ['placeholder' => '.form-control-lg']) }}
+
+            {{ Form::label('slug', 'Slug:',  ['class' => 'form-spacing-top']) }}
+            {{ Form::text('slug', null, ['class' => 'form-control '] ) }}
+
+            {{ Form::label('category_id', 'Category:', ['class' => 'form-spacing-top']) }}
+            {{ Form::select('category_id', $categories, null, ['class' => 'form-control']) }}
+
+            {{ Form::label('tags', 'Tags:', ['class' => 'mb-2 my-2']) }}
+            {{ Form::select('tags[]', $tags, null, ['id' => 'users', 'class' => 'form-control', 'multiple' => 'multiple']) }}
 
             {{ Form::label('body', 'Body:', ['class' => 'form-spacing-top']) }}
        {{ Form::textarea('body',null, ['class' => 'form-control']) }}
@@ -48,4 +64,21 @@
 
     </div> <!-- end od .row (form) -->
     {!! Form::close() !!}
+
 @stop
+
+
+@section('scripts')
+
+
+    {{--{!! Html::style('js/select2.min.js') !!}--}}
+    <script>
+        $(document).ready(function(){
+            $('#users').select2({
+                // placeholder : 'Please select a tag',
+                tags: true
+            });
+        });
+    </script>
+
+@endsection

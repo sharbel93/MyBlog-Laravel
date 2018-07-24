@@ -4,11 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
-
+use App\Category;
+use App\Tag;
 
 
 class PostController extends Controller
 {
+
+
+        public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +44,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('posts.create')->withCategories($categories)->withTags($tags);
     }
 
     /**
@@ -50,6 +61,8 @@ class PostController extends Controller
         // validate the data
         $this->validate($request, array(
             'title' => 'required|max:255',
+            'slug' => 'required|alpha_dash |min:5 |max: 255|unique:posts,slug',
+            'category_id' => 'required|integer',
             'body'=> 'required'
         ));
 
@@ -57,8 +70,12 @@ class PostController extends Controller
         $post = new Post;
 
         $post->title = $request->title;
+        $post->slug = $request->slug;
+        $post->category_id = $request->category_id;
         $post->body = $request->body;
         $post->save();
+
+        $post->tags()->sync($request->tags, false);
 
         // redirect to another page
         return redirect()->route('posts.show', $post->id)->with('success','The blog post was successfully saved!');
@@ -88,8 +105,21 @@ class PostController extends Controller
     {
         // find the post in the database and save as a var
             $post = Post::find($id);
+            $categories = Category::all();
+            $cats = array();
+            foreach ($categories as $category) {
+                $cats[$category->id] = $category->name;
+            }
+
+            $tags = Tag::all();
+            $tagsArray = array();
+            foreach ($tags as $tag) {
+                $tagsArray[$tag->id] = $tag->name;
+            }
+
+
         // return the view and pass in the var we previously created
-             return view('posts.edit')->withPost($post);
+             return view('posts.edit')->withPost($post)->withCategories($cats)->withTags($tagsArray);
     }
 
     /**
@@ -102,17 +132,46 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         // validate the data
+        $post = Post::find($id);
+        if ( $request->input('slug') == $post->slug ){
+            $this->validate($request, array(
+                'title' => 'required|max:255',
+                'category_id' => 'required|integer',
+                'body'=> 'required'
+            ));
+        }else {
+
         $this->validate($request, array(
             'title' => 'required|max:255',
+            'slug' => 'required|alpha_dash |min:5 |max: 255|unique:posts,slug',
+            'category_id' => 'required|integer',
             'body'=> 'required'
         ));
+
+        }
+
         // Save the data to the database
 
         $post = Post::find($id);
 
         $post->title = $request->input('title');
+        $post->slug = $request->input('slug');
+        $post->category_id = $request->input('category_id');
         $post->body = $request->input('body');
         $post->save();
+
+
+        $post->tags()->sync($request->tags);
+
+        // incase oferrors use the below code
+//        if (isset($request->tags)){
+//
+//            $post->tags()->sync($request->tags);
+//        } else {
+//            $post->tags()->sync(array());
+//        }
+
+
 
         // redirect with a success message to posts.show
         return redirect()->route('posts.show', $post->id)->with('success','The blog post was successfully saved!');
@@ -128,7 +187,9 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+        $post->tags()->detach();
         $post->delete();
+
         return redirect()->route('posts.index')->with('success','The blog post was successfully Deleted!');
     }
 }

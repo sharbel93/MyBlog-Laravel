@@ -16,6 +16,34 @@
 //});
 
 Route::get('/', 'PagesController@getIndex');
-Route::get('contact', 'PagesController@getContact');
 Route::get('about', 'PagesController@getAbout');
 Route::resource('posts','PostController');
+
+//Contact
+Route::get('contact', 'PagesController@getContact');
+Route::post('contact', 'PagesController@postContact');
+
+
+// Blog
+
+// the where clause below helps in authenticating the slug url
+// \w = all letters
+// \d = all numbers
+// \- = actual -(dash) character
+// \_ = actual _ (underscore)character
+Route::get('blog/{slug}', ['as' => 'blog.single', 'uses' => 'BlogController@getSingle'])->where('slug', '[\w\d\-\_]+');
+Route::get('blog', ['uses' => 'BlogController@getIndex', 'as' => 'blog.index']);
+
+// Categories
+Route::resource('categories','CategoryController', ['except' =>['create']]);
+
+//tags
+Route::resource('tags','TagController', ['except' =>['create']]);
+
+
+// Comments
+Route::post('comments/{post_id}', ['uses' => 'CommentsController@store', 'as' => 'comments.store']);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
