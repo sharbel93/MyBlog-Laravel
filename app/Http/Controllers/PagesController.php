@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMail;
 use Illuminate\Http\Request;
 use App\Post;
 use Mail;
@@ -65,6 +66,7 @@ class PagesController extends Controller
         $message->to('hello@sharbelchris');
         $message->subject($data['subject']);
        });
+
 
         return redirect('/')->with('success', 'Your Email is Successfully sent!');
     }
