@@ -17,13 +17,19 @@
 
     <div class="row">
         <div class="col-md-8 offset-md-2">
+            <h3 class="comments-title">
+                  <span class="badge  ">
+                        <i class="fas fa-2x fa-comments"></i> &nbsp;{{ $post->comments()->count() }}
+                    </span>
+                Comments
+            </h3>
         @foreach($post->comments as $comment)
         <div class="comment">
         <div class="author-info">
-        <img src="" alt="" class="author-image">
+        <img src="{{ "https://www.gravatar.com/avatar/". md5(strtolower(trim($comment->email)))."?s=50&d=wavatar" }}" alt="image" class="author-image">
         <div class="author-name">
         <h4>{{ $comment->name }}</h4>
-        <p>{{ $comment->created_at }}</p>
+        <p class="author-time">{{ date('F nS, Y - g:iA', strtotime($comment->created_at)) }}</p>
 
         </div>
         </div>
