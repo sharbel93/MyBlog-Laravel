@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class CommentsController extends Controller
 {
+
+public function __construct() 
+{
+    $this->middleware('auth', ['except' => 'store']);
+}
+
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +42,6 @@ class CommentsController extends Controller
      */
     public function store(Request $request, $post_id)
     {
-
         $this->validate($request, array(
             'name' => 'required|max:255',
             'email'=> 'required|email|max:255',
@@ -54,7 +59,7 @@ class CommentsController extends Controller
 
         $comment->save();
 
-        return redirect()->route('blog.single', [$post->slug])->with('success','Comment was added');
+        return redirect()->route('blog.single', [$post->slug])->with('success', 'Comment was added');
     }
 
     /**
@@ -76,7 +81,8 @@ class CommentsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $comment = Comment::find($id);
+        return view('comments.edit')->withComment($comment);
     }
 
     /**
@@ -88,7 +94,20 @@ class CommentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comment = Comment::find($id);
+
+        $this->validate($request, array('comment' => 'required'));
+
+        $comment->comment = $request->comment;
+        $comment->save();
+
+        return redirect()->route('posts.show', $comment->post->id);
+    }
+
+    public function delete($id)
+    {
+        $comment = Comment::find($id);
+        return view('comments.delete')->withComment($comment);
     }
 
     /**
@@ -99,6 +118,10 @@ class CommentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        $post_id = $comment->post->id;
+        $comment->delete();
+
+        return redirect()->route('posts.show', $post_id);
     }
 }

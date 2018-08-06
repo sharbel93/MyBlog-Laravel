@@ -5,12 +5,53 @@
     <div class="row">
         <div class="col-md-8">
     <h1>{{ $post->title }}</h1>
-    <p class="lead"> {{ $post->body }}</p>
+    <p class="lead"> {!! $post->body !!}</p>
 
             <div class="tags">
                 @foreach($post->tags as $tag)
                     <span class="badge badge-pill badge-secondary"> {{ $tag->name }}</span>
                 @endforeach
+            </div>
+
+            <div class="backend-comments" style="margin-top: 50px">
+              <h3>
+                  Comments
+                  <small>
+                      {{ $post->comments()->count() }} total
+                  </small>
+              </h3>
+
+                <div class="table-responsive">
+
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Comment</th>
+                        <th scope="col" ></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($post->comments as $comment)
+                    <tr>
+                        {{--<th scope="row">1</th>--}}
+                        <td>{{ $comment->name }}</td>
+                        <td>{{ $comment->email }}</td>
+                        <td>{{ $comment->comment }}</td>
+                        <td >
+                            <a href="{{ route('comments.edit', $comment->id) }}" class="btn btn-xs btn-primary float-left "><i class="fas fa-pencil-alt"></i> </a>
+                            <a href="{{ route('comments.delete', $comment->id) }}" class="btn btn-xs btn-danger"><i class="fas fa-trash-alt"> </i> </a>
+
+                        </td>
+                    </tr>
+                    @endforeach
+
+                    </tbody>
+                </table>
+                </div>
+
             </div>
 
         </div>
