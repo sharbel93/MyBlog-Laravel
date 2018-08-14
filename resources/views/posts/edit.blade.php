@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT'] ) !!}
+    {!! Form::model($post, ['route' => ['posts.update', $post->id], 'method' => 'PUT', 'files' => true] ) !!}
     <div class="row">
 
 
@@ -27,6 +27,9 @@
 
             {{ Form::label('tags', 'Tags:', ['class' => 'mb-2 my-2']) }}
             {{ Form::select('tags[]', $tags, null, ['id' => 'users', 'class' => 'form-control', 'multiple' => 'multiple']) }}
+
+            {{ Form::label('featured_image', 'Update Feature',['class' => 'mb-2 my-2']) }}
+            {{ Form::file('featured_image') }}
 
             {{ Form::label('body', 'Body:', ['class' => 'form-spacing-top']) }}
        {{ Form::textarea('body',null, ['class' => 'form-control']) }}

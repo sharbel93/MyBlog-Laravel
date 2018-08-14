@@ -18,7 +18,7 @@
             <hr>
             <h1> Create New Post </h1>
 
-            {!! Form::open(array('route' => 'posts.store', 'data-parsely-validate' => '')) !!}
+            {!! Form::open(array('route' => 'posts.store', 'data-parsely-validate' => '', 'files' => true)) !!}
             {{ Form::label('title', 'Title:') }}
             {{ Form::text('title', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '255'))  }}
 
@@ -40,7 +40,14 @@
                 @endforeach
             </select>
 
-            {{ Form::label('body', 'Post Body:') }}
+
+             
+            {{  Form::label('featured_image', 'Upload Featured Image:', [ 'class' => 'my-4']) }}<br>
+            {{  Form::file('featured_image', [ 'class' => 'mb-3']) }}<br>
+            
+             
+
+            {{ Form::label('body', 'Post Body:') }} 
             {{ Form::textarea('body',null,array('class' => 'form-control', 'required' => '')) }}
 
             {{ Form::submit('Create Post', array('class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top: 20px')) }}

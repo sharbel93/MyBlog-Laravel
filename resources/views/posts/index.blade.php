@@ -24,7 +24,7 @@
         <div class="col-md-12">
             <table class="table">
                 <thead>
-                <tr>
+                <tr >
                     <th scope="col">#</th>
                     <th scope="col">Title</th>
                     <th scope="col">Body</th>
@@ -36,7 +36,7 @@
 
                 @foreach($posts as $post)
 
-                <tr>
+                <tr class="table-primary">
                     <th scope="row">{{ $post->id }}</th>
                     <td>{{ $post->title }}</td>
                     <td>{{ substr(strip_tags($post->body),0 , 50 ) }} {{ strlen(strip_tags($post->body)) > 50 ? "..." : "" }}</td>
