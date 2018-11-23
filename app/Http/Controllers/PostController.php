@@ -72,14 +72,15 @@ class PostController extends Controller
         $post->title = $request->title;
         $post->slug = $request->slug;
         $post->category_id = $request->category_id;
-        $post->body = Purifierfier::clean($request->body);
+        $post->body = Purifier::clean($request->body);
 
         if ($request->hasFile('featured_image')) {
             $image = $request->file('featured_image');
             $filename = time().'.'.$image->getClientOriginalExtension();
-            $location = public_path('images/'. $filename);
+            $location = public_path("/images/posts/". $filename);
+//            $location = '/images/posts/'. $filename;
             Image::make($image)->resize(800, 400)->save($location);
-
+//            $post->image = 'images/posts/'.$filename;
             $post->image = $filename;
         }
 
